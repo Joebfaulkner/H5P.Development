@@ -344,14 +344,13 @@ H5P.Development = function ($, Question)
    * @param {object} results Results.
    */
   Development.prototype.updateScore = function (results) {
-    results = results || this.computeResults();
+    results = results || [];
     this.score = Math.min(this.computeScore(results), this.getMaxScore());
   };
   /**
    * Handle the evaluation.
    */
    Development.prototype.handleEvaluation = function () {
-    const results = this.computeResults();
 
     // Build explanations
     //const explanations = this.buildExplanation(results);
@@ -426,15 +425,6 @@ H5P.Development = function ($, Question)
     if (this.solution.parentNode !== null) {
       this.solution.parentNode.removeChild(this.solution);
     }
-  };
-
-  /**
-   * Compute the results.
-   * @return {boolean} Is a palindrome or not.
-   */
-  Development.prototype.computeResults = function ()  
-  {
-
   };
   /**
    * Compute the score for the results.
