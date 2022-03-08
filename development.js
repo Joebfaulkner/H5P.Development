@@ -34,7 +34,6 @@ H5P.Development = function ($, Question)
         {
           media: {},
           taskDescription: '',
-          solution: {},
           overallFeedback: [],
           behaviour: {
             minimumLength: 0,
@@ -100,7 +99,6 @@ H5P.Development = function ($, Question)
         this.getMaxScore(),
         this.params.behaviour.percentagePassing * scoreMax / 100 || 0);
   
-      this.solution = this.buildSolution();
     }
   
     // Extends Question
@@ -372,50 +370,6 @@ H5P.Development = function ($, Question)
 
     this.trigger('resize');
   };
-
-  /**
-   * Build solution DOM object.
-   * @return {Object} DOM object.
-   */
-  Development.prototype.buildSolution = function () {
-    const solution = document.createElement('div');
-    solution.classList.add(SOLUTION_CONTAINER);
-
-    this.solutionAnnouncer = document.createElement('div');
-    this.solutionAnnouncer.setAttribute('tabindex', '0');
-    this.solutionAnnouncer.setAttribute('aria-label', this.params.ariaNavigatedToSolution);
-    this.solutionAnnouncer.addEventListener('focus', function (event) {
-      // Just temporary tabbable element. Will be announced by readspaker.
-      event.target.blur();
-      event.target.setAttribute('tabindex', '-1');
-    });
-    solution.appendChild(this.solutionAnnouncer);
-
-    const solutionTitle = document.createElement('div');
-    solutionTitle.classList.add(SOLUTION_TITLE);
-    solutionTitle.innerHTML = this.params.solutionTitle;
-    solution.appendChild(solutionTitle);
-
-    const solutionIntroduction = document.createElement('div');
-    solutionIntroduction.classList.add(SOLUTION_INTRODUCTION);
-    solutionIntroduction.innerHTML = this.params.solution.introduction;
-    solution.appendChild(solutionIntroduction);
-
-    const solutionSample = document.createElement('div');
-    solutionSample.classList.add(SOLUTION_SAMPLE);
-    solution.appendChild(solutionSample);
-
-    return solution;
-  };
-
-  /**
-   * Hide the solution.
-   */
-  Development.prototype.hideSolution = function () {
-    if (this.solution.parentNode !== null) {
-      this.solution.parentNode.removeChild(this.solution);
-    }
-  };
   /**
    * Compute the score for the results.
    * 
@@ -440,10 +394,6 @@ H5P.Development = function ($, Question)
    * @param {number} score - Score the user received.
    */
   Development.prototype.handleButtons = function (score) {
-    if (this.params.solution.sample && !this.solution) {
-      this.showButton('show-solution');
-    }
-
     // We need the retry button if the mastering score has not been reached or scoring is irrelevant
     if (score < this.getMaxScore() || this.params.behaviour.ignoreScoring || this.getMaxScore() === 0) {
       if (this.params.behaviour.enableRetry) {
