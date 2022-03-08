@@ -304,7 +304,6 @@ H5P.Development = function ($, Question)
    Development.prototype.resetTask = function () {
     this.setExplanation();
     this.removeFeedback();
-    this.hideSolution();
 
     this.hideButton('show-solution');
     this.hideButton('try-again');
@@ -339,27 +338,20 @@ H5P.Development = function ($, Question)
 
   /**
    * Update score.
-   * @param {object} results Results.
+   * 
    */
-  Development.prototype.updateScore = function (results) {
-    results = results || [];
-    this.score = Math.min(this.computeScore(results), this.getMaxScore());
+  Development.prototype.updateScore = function () {
+    this.score = Math.min(this.computeScore(), this.getMaxScore());
   };
   /**
    * Handle the evaluation.
    */
    Development.prototype.handleEvaluation = function () {
 
-    // Build explanations
-    //const explanations = this.buildExplanation(results);
-
-    // Show explanations
-    /*if (explanations.length > 0) {
-      this.setExplanation(explanations, this.params.feedbackHeader);
-    }*/
+   
 
     // Not all keyword groups might be necessary for mastering
-    this.updateScore(results);
+    this.updateScore();
     const textScore = H5P.Question
       .determineOverallFeedback(this.params.overallFeedback, this.getScore() / this.getMaxScore())
       .replace('@score', this.getScore())
@@ -381,11 +373,10 @@ H5P.Development = function ($, Question)
     this.trigger('resize');
   };
   /**
-   * Compute the score for the results.
-   * @param {Object[]} results - Results from the task.
+   * Compute the score
    * @return {number} Score.
    */
-  Development.prototype.computeScore = function(results)
+  Development.prototype.computeScore = function()
   {
       console.log(this.getInput().length);
 
