@@ -339,17 +339,27 @@ H5P.Development = function ($, Question)
 
   /**
    * Update score.
+   * @param {object} results Results.
    */
-  Development.prototype.updateScore = function () {
-    this.score = Math.min(this.computeScore(), this.getMaxScore());
+  Development.prototype.updateScore = function (results) {
+    results = results || [];
+    this.score = Math.min(this.computeScore(results), this.getMaxScore());
   };
   /**
    * Handle the evaluation.
    */
    Development.prototype.handleEvaluation = function () {
 
+    // Build explanations
+    //const explanations = this.buildExplanation(results);
+
+    // Show explanations
+    /*if (explanations.length > 0) {
+      this.setExplanation(explanations, this.params.feedbackHeader);
+    }*/
+
     // Not all keyword groups might be necessary for mastering
-    this.updateScore();
+    this.updateScore(results);
     const textScore = H5P.Question
       .determineOverallFeedback(this.params.overallFeedback, this.getScore() / this.getMaxScore())
       .replace('@score', this.getScore())
@@ -372,10 +382,10 @@ H5P.Development = function ($, Question)
   };
   /**
    * Compute the score for the results.
-   * 
+   * @param {Object[]} results - Results from the task.
    * @return {number} Score.
    */
-  Development.prototype.computeScore = function()
+  Development.prototype.computeScore = function(results)
   {
       console.log(this.getInput().length);
 
@@ -388,6 +398,56 @@ H5P.Development = function ($, Question)
         return 0;
     }
   };
+
+  /**
+   * Build the explanations for H5P.Question.setExplanation.
+   * @param {Object} results - Results from the task.
+   * @return {Object[]} Explanations for H5P.Question.
+   */
+  /*Development.prototype.buildExplanation = function (results) {
+    const explanations = [];
+
+    let word;
+    this.params.keywords.forEach(function (keyword, i) {
+      word = FEEDBACK_EMPTY;
+      // Keyword was not found and feedback is provided for this case
+      if (results[i].length === 0 && keyword.options.feedbackMissed) {
+        if (keyword.options.feedbackMissedWord === 'keyword') {
+          // Main keyword defined
+          word = keyword.keyword;
+        }
+        explanations.push({correct: word, text: keyword.options.feedbackMissed});
+      }
+
+      // Keyword found and feedback is provided for this case
+      if (results[i].length > 0 && keyword.options.feedbackIncluded) {
+        // Set word in front of feedback
+        switch (keyword.options.feedbackIncludedWord) {
+          case 'keyword':
+            // Main keyword defined
+            word = keyword.keyword;
+            break;
+          case 'alternative':
+            // Alternative that was found
+            word = results[i][0].keyword;
+            break;
+          case 'answer':
+            // Answer matching an alternative at the learner typed it
+            word = results[i][0].match;
+            break;
+        }
+        explanations.push({correct: word, text: keyword.options.feedbackIncluded});
+      }
+    });
+
+    if (explanations.length > 0) {
+      // Sort "included" before "not included", but keep order otherwise
+      explanations.sort(function (a, b) {
+        return a.correct === FEEDBACK_EMPTY && b.correct !== FEEDBACK_EMPTY;
+      });
+    }
+    return explanations;
+  };*/
 
   /**
    * Handle buttons' visibility.
