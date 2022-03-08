@@ -378,8 +378,10 @@ H5P.Development = function ($, Question)
    */
   Development.prototype.computeScore = function()
   {
-      console.log(this.getInput().length);
-
+    const tokens = Token.tokenization(this.getInput("Φ"))
+    console.log(tokens);
+    console.log(this.getInput().length);
+    console.log(this.getInput("Φ"));
     
     if(this.getInput().length > 0)
     {
@@ -388,6 +390,7 @@ H5P.Development = function ($, Question)
     else{
         return 0;
     }
+
   };
   /**
    * Handle buttons' visibility.

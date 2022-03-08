@@ -18,6 +18,9 @@
     },
     {
       "path": "inputfield.js"
+    },
+    {
+      "path": "token.js"
     }
   ],
   "preloadedCss": [
