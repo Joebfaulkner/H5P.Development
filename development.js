@@ -79,7 +79,7 @@ H5P.Development = function ($, Question)
        * contract at {@link https://h5p.org/documentation/developers/contracts#guides-header-8} and
        * {@link https://h5p.org/documentation/developers/contracts#guides-header-9}
        */
-      this.params.behaviour.enableSolutionsButton = (typeof this.params.solution.sample !== 'undefined' && this.params.solution.sample !== '');
+      //this.params.behaviour.enableSolutionsButton = (typeof this.params.solution.sample !== 'undefined' && this.params.solution.sample !== '');
       this.params.behaviour.enableRetry = this.params.behaviour.enableRetry || false;
   
       // Determine the minimum number of characters that should be entered
@@ -372,16 +372,34 @@ H5P.Development = function ($, Question)
 
     this.trigger('resize');
   };
+
+  let w = "= "
+  let x = w.slice(1,2);
+  let y = " ";
+  let z = "Φ";
+  if(x !== y && x !== z)
+  {
+    console.log("not equal");
+  }
+  else
+  {
+    console.log("equal");
+  }
+  console.log(x)
+
+
+
+
   /**
    * Compute the score
    * @return {number} Score.
    */
   Development.prototype.computeScore = function()
   {
-    const tokens = Token.tokenization(this.getInput("Φ"))
+    const tokens = Token.tokenization(this.getInput("Φ"));
     console.log(tokens);
-    console.log(this.getInput().length);
     console.log(this.getInput("Φ"));
+    console.log("BREAK!");
     
     if(this.getInput().length > 0)
     {
