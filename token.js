@@ -49,7 +49,7 @@ class Token
                     previousSpot = currentSpot;
                 }
             }
-            if(input.charAt(currentSpot) === '"') //Check for strings
+            else if(input.charAt(currentSpot) === '"') //Check for strings
             {
                 previousSpot = currentSpot;
                 currentSpot++;
@@ -82,10 +82,6 @@ class Token
                 {
                     tokens.push(new Token(tokenName, "literal"));
                 }
-                /*else if((input.charAt(previousSpot+1) === '/' && input.charAt(previousSpot+2) === '/' && input.charAt(currentSpot) === 'Φ') || (input.charAt(previousSpot+1) === '/' && input.charAt(previousSpot+2) === '*' && intput.charAt(currentSpot-2) === '*' && input.charAt(currentSpot-1) === '/')) // Check for commments
-                {
-                    tokens.push(new Token(tokenName, "comment"));
-                }*/
                 else if(tokenName !== '') // If it's none of that it should be an identifier
                 {
                     if(tokenName.slice(tokenName.length - 2, tokenName.length) === '++' || tokenName.slice(tokenName.length - 2, tokenName.length) === '--') // Cover instances such as x++ or x--
@@ -93,6 +89,10 @@ class Token
                         tokens.push(new Token(tokenName.slice(0, tokenName.length -2), "identifier"));
                         tokens.push(new Token(tokenName.slice(tokenName.length-2, tokenName.length), "opperator"));
                     }
+                    /*else if(tokenName.search(opperators) !== -1)
+                    {
+                        console.log("this actually works");
+                    }*/
                     else
                     {
                         tokens.push(new Token(tokenName, "identifier"));
