@@ -372,24 +372,6 @@ H5P.Development = function ($, Question)
 
     this.trigger('resize');
   };
-
-  let w = "= "
-  let x = w.slice(1,2);
-  let y = " ";
-  let z = "Φ";
-  if(x !== y && x !== z)
-  {
-    console.log("not equal");
-  }
-  else
-  {
-    console.log("equal");
-  }
-  console.log(x)
-
-
-
-
   /**
    * Compute the score
    * @return {number} Score.
