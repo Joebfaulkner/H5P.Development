@@ -40,16 +40,16 @@ class Token
                 {
                     previousSpot = currentSpot;
                     currentSpot++;
-                    while(input.charAt(currentSpot) != "/" && input.charAt(currentSpot-1) != "*")
+                    while(input.charAt(currentSpot) != "/" || input.charAt(currentSpot-1) != "*")
                     {
                         currentSpot++;
                     }
-                    let tokenName = input.slice(previousSpot, currentSpot);
+                    let tokenName = input.slice(previousSpot-1, currentSpot+1);
                     tokens.push(new Token(tokenName, "commment"));
                     previousSpot = currentSpot;
                 }
             }
-            if(input.charAt(currentSpot) === '"') //Check for strings
+            else if(input.charAt(currentSpot) === '"') //Check for strings
             {
                 previousSpot = currentSpot;
                 currentSpot++;
@@ -61,7 +61,25 @@ class Token
                 tokens.push(new Token(tokenName, "literal"));
                 previousSpot = currentSpot;
             }
-            
+            else if(opperators.indexOf(input.charAt(currentSpot)) !== -1 && !(seperators.indexOf(input.charAt(currentSpot-1)) !== -1))
+            {
+                let tokenName = input.slice(previousSpot + 1, currentSpot);
+                if(tokenName != '')
+                {
+                    tokens.push(new Token(tokenName, "identifier"));
+                    if(opperators.indexOf(input.charAt(currentSpot) + input.charAt(currentSpot+1)) !== -1)
+                    {
+                        tokenName = input.slice(currentSpot, currentSpot+2)
+                        tokens.push(new Token(tokenName, "opperator"));
+                    }
+                    else
+                    {
+                        tokenName = input.charAt(currentSpot)
+                        tokens.push(new Token(tokenName, "opperator"));
+                    }
+                    previousSpot = currentSpot;
+                }
+            }
             else if(seperators.indexOf(input.charAt(currentSpot)) !== -1 || currentSpot == input.length) //Check the current spot for seperators or if we've reached the end of the input
             {
                 let tokenName = input.slice(previousSpot + 1, currentSpot);
@@ -82,12 +100,29 @@ class Token
                 {
                     tokens.push(new Token(tokenName, "literal"));
                 }
-                /*else if((input.charAt(previousSpot+1) === '/' && input.charAt(previousSpot+2) === '/' && input.charAt(currentSpot) === 'Φ') || (input.charAt(previousSpot+1) === '/' && input.charAt(previousSpot+2) === '*' && intput.charAt(currentSpot-2) === '*' && input.charAt(currentSpot-1) === '/')) // Check for commments
-                {
-                    tokens.push(new Token(tokenName, "comment"));
-                }*/
                 else if(tokenName !== '') // If it's none of that it should be an identifier
                 {
+                    /*let x = 0;
+                    while(x < tokenName.length) // Check if they have an opperator hidden between an identifier and a seperator like: int x=0;
+                    {
+                        if(operators.indexOf(tokenName.charAt(x)) !== -1)
+                        {
+                            let temp = tokenName.slice(0,x);
+                            tokens.push(Token(temp, "identifier"));
+                            let y = x;
+                            while(y < tokenName.length)
+                            {
+                                if(operators.indexOf(tokenName.charAt(y)) !== -1)
+                                {
+
+                                    break;
+                                }
+                                y++;
+                            }
+                            break;
+                        }
+                        x++
+                    }*/
                     if(tokenName.slice(tokenName.length - 2, tokenName.length) === '++' || tokenName.slice(tokenName.length - 2, tokenName.length) === '--') // Cover instances such as x++ or x--
                     {
                         tokens.push(new Token(tokenName.slice(0, tokenName.length -2), "identifier"));
