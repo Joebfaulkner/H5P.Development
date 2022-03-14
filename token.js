@@ -102,27 +102,6 @@ class Token
                 }
                 else if(tokenName !== '') // If it's none of that it should be an identifier
                 {
-                    /*let x = 0;
-                    while(x < tokenName.length) // Check if they have an opperator hidden between an identifier and a seperator like: int x=0;
-                    {
-                        if(operators.indexOf(tokenName.charAt(x)) !== -1)
-                        {
-                            let temp = tokenName.slice(0,x);
-                            tokens.push(Token(temp, "identifier"));
-                            let y = x;
-                            while(y < tokenName.length)
-                            {
-                                if(operators.indexOf(tokenName.charAt(y)) !== -1)
-                                {
-
-                                    break;
-                                }
-                                y++;
-                            }
-                            break;
-                        }
-                        x++
-                    }*/
                     if(tokenName.slice(tokenName.length - 2, tokenName.length) === '++' || tokenName.slice(tokenName.length - 2, tokenName.length) === '--') // Cover instances such as x++ or x--
                     {
                         tokens.push(new Token(tokenName.slice(0, tokenName.length -2), "identifier"));
